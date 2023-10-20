@@ -4,13 +4,17 @@
     <el-row>
       <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px">
         <el-tree
+          icon-class= "el-icon-eleme"
           :data="data123"
           node-key="id"
           :default-expanded-keys="[2, 3]"
           :default-checked-keys="[5]"
+          @node-click="handleNode"
+          expand-on-click-node="false"	
         />
       </el-col>
-
+      <!-- <div v-if="selectKey==='1.1.2.招生计划完成率'"> hihiewjf</div>
+      <div v-if="selectKey==='1.1.专业影响及规模'"> 1.1.专业影响及规模</div> -->
       <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px">
         <h4>指标： 1.1.1.获得市级及以上荣誉</h4>
         <div>指标填报说明：获得上海市级及以上荣誉数量。
@@ -88,22 +92,22 @@
 <script>
 import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
 import { parseTime } from '@/utils'
-const tableData = [
-  {
-    date: '上海市教育教学成果奖',
-    name: '2022.09',
-    address: '重要奖项',
-    attachment: '',
-    act: '修改 删除'
-  },
-  {
-    date: '产教融合试点专业',
-    name: '2022.09',
-    address: '重要奖项',
-    attachment: '',
-    act: '修改 删除'
-  }
-]
+const consttableData= [
+      {
+        date: '上海市教育教学成果奖',
+        name: '2022.09',
+        address: '重要奖项',
+        attachment: '',
+        act: '修改 删除'
+      },
+      {
+        date: '产教融合试点专业',
+        name: '2022.09',
+        address: '重要奖项',
+        attachment: '',
+        act: '修改 删除'
+      }
+    ]
 const calendarTypeOptions = [
   { key: 'CN', display_name: '荣誉1' },
   { key: 'US', display_name: '荣誉2' },
@@ -118,7 +122,9 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 export default {
   data() {
     return {
-      tableData,
+      
+      selectKey: '1.1.专业影响及规模',
+      tableData: consttableData,
       tableKey: 0,
       list: null,
       total: 0,
@@ -137,13 +143,18 @@ export default {
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
+        date: new Date(),
+        name: '',
+        address: '',
+        attachment: '',
         id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        type: '',
-        status: 'published'
+        // importance: 1,
+        // remark: '',
+        // timestamp: new Date(),
+        // title: '',
+        // type: '',
+        // status: 'published'
+        
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -159,6 +170,7 @@ export default {
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
       downloadLoading: false,
+
       data123: [
         {
           id: 1,
@@ -194,64 +206,64 @@ export default {
                   label: '1.2.2.年度调停课率',
                   disabled: true
                 },
-                {
-                  id: 7,
-                  label: '1.2.3.教学规范达成度',
-                  disabled: true
-                },
-                {
-                  id: 7,
-                  label: '1.2.4.专业质量检测排名',
-                  disabled: true
-                }
+                // {
+                //   id: 7,
+                //   label: '1.2.3.教学规范达成度',
+                //   disabled: true
+                // },
+                // {
+                //   id: 7,
+                //   label: '1.2.4.专业质量检测排名',
+                //   disabled: true
+                // }
               ]
             }
           ]
         },
-        {
-          id: 1,
-          label: <h4>2.师资队伍建设</h4>,
-          children: [
-            {
-              id: 3,
-              label: '2.1.数量与结构',
-              children: [
-                {
-                  id: 4,
-                  label: '2.1.1.“双师型”专任教师占比'
-                },
-                {
-                  id: 5,
-                  label: '2.1.2.高级职业技能等级证书（高级工及以上）',
-                  disabled: true
-                },
-                {
-                  id: 5,
-                  label: '2.1.3.高级职称专任教师占比',
-                  disabled: true
-                },
-                {
-                  id: 5,
-                  label: '2.1.4.高层次教学团队（工作室）数',
-                  disabled: true
-                },
-                {
-                  id: 5,
-                  label: '2.1.5.企业兼职教师占比',
-                  disabled: true
-                }
-              ]
-            },
-            {
-              id: 2,
-              label: '2.2.教育教学能力',
-              disabled: true,
-              children: [
+        // {
+        //   id: 1,
+        //   label: <h4>2.师资队伍建设</h4>,
+        //   children: [
+        //     {
+        //       id: 3,
+        //       label: '2.1.数量与结构',
+        //       children: [
+        //         {
+        //           id: 4,
+        //           label: '2.1.1.“双师型”专任教师占比'
+        //         },
+        //         {
+        //           id: 5,
+        //           label: '2.1.2.高级职业技能等级证书（高级工及以上）',
+        //           disabled: true
+        //         },
+        //         {
+        //           id: 5,
+        //           label: '2.1.3.高级职称专任教师占比',
+        //           disabled: true
+        //         },
+        //         {
+        //           id: 5,
+        //           label: '2.1.4.高层次教学团队（工作室）数',
+        //           disabled: true
+        //         },
+        //         {
+        //           id: 5,
+        //           label: '2.1.5.企业兼职教师占比',
+        //           disabled: true
+        //         }
+        //       ]
+        //     },
+        //     {
+        //       id: 2,
+        //       label: '2.2.教育教学能力',
+        //       disabled: true,
+        //       children: [
 
-              ]
-            }
-          ]
-        }
+        //       ]
+        //     }
+        //   ]
+        // }
       ],
       defaultProps: {
         children: 'children',
@@ -263,6 +275,12 @@ export default {
     this.getList()
   },
   methods: {
+    handleNode(data) {
+      console.log('sdfsdf')
+      this.selectKey = data.label
+      
+      console.log(data.label)
+    },
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
@@ -321,7 +339,15 @@ export default {
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
+        this.tableData.push({
+        date: 'dsfdsfl',
+        name: '2022.09',
+        address: '重要奖项',
+        attachment: '',
+        act: '修改 删除'
+      })
         if (valid) {
+          console.log(this.temp)
           this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
           this.temp.author = 'vue-element-admin'
           createArticle(this.temp).then(() => {
@@ -336,6 +362,7 @@ export default {
           })
         }
       })
+      
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj

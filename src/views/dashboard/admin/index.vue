@@ -4,10 +4,11 @@
     <h4>请各专业老师按照各指标的填报要求，如实填报并上传相关证明材料</h4>
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
-    <el-row :gutter="32">
+    <el-row :gutter="40">
 
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div>审批情况总览 </div>
+      <el-col :span="12">
+        <el-card class="box-card">
+          <div>审批情况总览 </div>
         系部：
         <el-select v-model="value" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
           <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
@@ -20,14 +21,27 @@
         <div class="chart-wrapper">
           <pie-chart />
         </div>
+        </el-card>
+        
       </el-col>
 
-      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px">
-        <el-row :gutter="32">
+      <el-col :span="12">
+        <!-- <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <i class="el-icon-s-order"></i>
+        <span>卡片名称</span>
+      </div>
+      <div style="margin-left: 100px;">
+        <div v-for= "x  in todolistData"><el-radio v-model="radio" label="1">{{x}}</el-radio></div>
+      </div>
+        
+        </el-card> -->
+
+        <el-row :gutter="0">
           <todo-list />
         </el-row>
 
-        <el-row :gutter="32">
+        <el-row :gutter="0">
           <todo-list1 />
         </el-row>
       </el-col>
@@ -47,6 +61,11 @@ import TransactionTable from './components/TransactionTable'
 import TodoList from './components/TodoList'
 import TodoList1 from './components/TodoList1'
 import BoxCard from './components/BoxCard'
+const todolistData = [
+  "abc",
+  "dsfdsf",
+  "sdfsdfsdf"
+]
 
 const lineChartData = {
   newVisitis: {
@@ -105,7 +124,8 @@ export default {
   },
   data() {
     return {
-      options
+      options,
+      todolistData
     }
   },
   methods: {
