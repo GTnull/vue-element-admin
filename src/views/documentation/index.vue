@@ -1,104 +1,87 @@
 <template>
   <div class="grid-content bg-purple">
-  <h3>专业：数字媒体技术应用</h3>
-  <el-row>
-    <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px">
-      <el-tree
-        :data="data123"
-        node-key="id"
-        :default-expanded-keys="[2, 3]"
-        :default-checked-keys="[5]"
-      >
-      </el-tree>
+    <h3>专业：数字媒体技术应用</h3>
+    <el-row>
+      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px">
+        <el-tree
+          :data="data123"
+          node-key="id"
+          :default-expanded-keys="[2, 3]"
+          :default-checked-keys="[5]"
+        />
       </el-col>
 
-    <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px">
-    <!-- <el-tree
-      :data="data"
-      node-key="id"
-      :default-expanded-keys="[2, 3]"
-      :default-checked-keys="[5]"
-    >
-    </el-tree> -->
-    <h4>指标： 1.1.1.获得市级及以上荣誉</h4>
-    <div>指标填报说明：获得上海市级及以上荣誉数量。
-    如：国家级教育教学成果奖、上海市教育教学成果奖、产教融合试点专业、上海市中等职业学校示范品牌及试点专业、市教委组织的教学改革试点专业、中职专业及贯通专业评估获评“优秀”等累加数量。</div>
-  <div> </div>
-  <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        添加荣誉
-      </el-button>
+      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px">
+        <h4>指标： 1.1.1.获得市级及以上荣誉</h4>
+        <div>指标填报说明：获得上海市级及以上荣誉数量。
+          如：国家级教育教学成果奖、上海市教育教学成果奖、产教融合试点专业、上海市中等职业学校示范品牌及试点专业、市教委组织的教学改革试点专业、中职专业及贯通专业评估获评“优秀”等累加数量。</div>
+        <div />
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+          添加荣誉
+        </el-button>
 
-<el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="荣誉名称：" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="">
-            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="获得时间：" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="" />
-        </el-form-item>
-        <el-form-item label="获得教师：" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        
-        <el-form-item label="证书附件：">
+        <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+          <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+            <el-form-item label="荣誉名称：" prop="type">
+              <el-select v-model="temp.type" class="filter-item" placeholder="">
+                <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="获得时间：" prop="timestamp">
+              <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="" />
+            </el-form-item>
+            <el-form-item label="获得教师：" prop="title">
+              <el-input v-model="temp.title" />
+            </el-form-item>
+
+            <el-form-item label="证书附件：">
+              <el-button :loading="loading" style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">
+                上传
+              </el-button>
+
+            </el-form-item>
+
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">
+              取消
+            </el-button>
+            <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+              确定
+            </el-button>
+          </div>
+        </el-dialog>
+
+        <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
+          <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
+            <el-table-column prop="key" label="Channel" />
+            <el-table-column prop="pv" label="Pv" />
+          </el-table>
+          <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+          </span>
+        </el-dialog>
+
+        <el-table :data="tableData" style="width: 100%">
+          <el-table-column prop="date" label="荣誉名称" width="150" />
+          <el-table-column prop="name" label="获得时间" width="80" />
+          <el-table-column prop="address" label="获得教师" />
+          <el-table-column prop="attachment" label="证书附件" />
+          <el-table-column prop="act" label="操作">
+            <a style="color: blue"> 修改 删除</a>
+          </el-table-column>
+        </el-table>
+        <p /><p /><p /><p />
         <el-button :loading="loading" style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">
-        上传
-      </el-button>
-          <!-- <el-select v-model="temp.status" class="filter-item" placeholder="">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select> -->
-        </el-form-item>
-        <!-- <el-form-item label="Imp">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-        </el-form-item>
-        <el-form-item label="Remark">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
-        </el-form-item> -->
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
-          取消
+          保存
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-          确定
+
+        <el-button :loading="loading" style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">
+          提交并填写下一项
         </el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel" />
-        <el-table-column prop="pv" label="Pv" />
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
-      </span>
-    </el-dialog>
-
-    <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="date" label="荣誉名称" width="150" />
-        <el-table-column prop="name" label="获得时间" width="80" />
-        <el-table-column prop="address" label="获得教师" />
-        <el-table-column prop="attachment" label="证书附件" />
-        <el-table-column  prop="act" label="操作">
-        <a style="color: blue"> 修改 删除</a>
-        </el-table-column>
-        <!-- <el-table-column prop="act" label="操作" style="color: blue"/> -->
-      </el-table>
-<p/><p/><p/><p/>
-             <el-button :loading="loading" style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">
-        保存
-      </el-button>
-
-      <el-button :loading="loading" style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">
-        提交并填写下一项
-      </el-button>
-    </el-col>
+      </el-col>
 
     </el-row>
-
 
   </div>
 </template>
@@ -111,25 +94,15 @@ const tableData = [
     name: '2022.09',
     address: '重要奖项',
     attachment: '',
-    act: '修改 删除',
+    act: '修改 删除'
   },
   {
     date: '产教融合试点专业',
     name: '2022.09',
     address: '重要奖项',
     attachment: '',
-    act: '修改 删除',
-  },
-  // {
-  //   date: '2016-05-04',
-  //   name: 'Tom',
-  //   address: 'No. 189, Grove St, Los Angeles',
-  // },
-  // {
-  //   date: '2016-05-01',
-  //   name: 'Tom',
-  //   address: 'No. 189, Grove St, Los Angeles',
-  // },
+    act: '修改 删除'
+  }
 ]
 const calendarTypeOptions = [
   { key: 'CN', display_name: '荣誉1' },
@@ -193,47 +166,47 @@ export default {
           children: [
             {
               id: 3,
-              label: "1.1.专业影响及规模",
+              label: '1.1.专业影响及规模',
               children: [
                 {
                   id: 4,
-                  label: <a href="http://localhost:9527/#/documentation/index">1.1.1.获得市级以上荣誉 </a>,
+                  label: <a href='http://localhost:9527/#/documentation/index'>1.1.1.获得市级以上荣誉 </a>
                   // label: "1.1.1.获得市级以上荣誉",
                 },
                 {
                   id: 5,
-                  label: "1.1.2.招生计划完成率",
-                  disabled: true,
-                },
-              ],
+                  label: '1.1.2.招生计划完成率',
+                  disabled: true
+                }
+              ]
             },
             {
               id: 2,
-              label: "1.2.专业规范执行 （教学运行中心填写核对）",
+              label: '1.2.专业规范执行 （教学运行中心填写核对）',
               disabled: true,
               children: [
                 {
                   id: 6,
-                  label: "1.2.1.人陪方案/课程标准规范度",
+                  label: '1.2.1.人陪方案/课程标准规范度'
                 },
                 {
                   id: 7,
-                  label: "1.2.2.年度调停课率",
-                  disabled: true,
+                  label: '1.2.2.年度调停课率',
+                  disabled: true
                 },
                 {
                   id: 7,
-                  label: "1.2.3.教学规范达成度",
-                  disabled: true,
+                  label: '1.2.3.教学规范达成度',
+                  disabled: true
                 },
                 {
                   id: 7,
-                  label: "1.2.4.专业质量检测排名",
-                  disabled: true,
-                },
-              ],
-            },
-          ],
+                  label: '1.2.4.专业质量检测排名',
+                  disabled: true
+                }
+              ]
+            }
+          ]
         },
         {
           id: 1,
@@ -241,50 +214,50 @@ export default {
           children: [
             {
               id: 3,
-              label: "2.1.数量与结构",
+              label: '2.1.数量与结构',
               children: [
                 {
                   id: 4,
-                  label: "2.1.1.“双师型”专任教师占比",
+                  label: '2.1.1.“双师型”专任教师占比'
                 },
                 {
                   id: 5,
-                  label: "2.1.2.高级职业技能等级证书（高级工及以上）",
-                  disabled: true,
+                  label: '2.1.2.高级职业技能等级证书（高级工及以上）',
+                  disabled: true
                 },
                 {
                   id: 5,
-                  label: "2.1.3.高级职称专任教师占比",
-                  disabled: true,
+                  label: '2.1.3.高级职称专任教师占比',
+                  disabled: true
                 },
                 {
                   id: 5,
-                  label: "2.1.4.高层次教学团队（工作室）数",
-                  disabled: true,
+                  label: '2.1.4.高层次教学团队（工作室）数',
+                  disabled: true
                 },
                 {
                   id: 5,
-                  label: "2.1.5.企业兼职教师占比",
-                  disabled: true,
-                },
-              ],
+                  label: '2.1.5.企业兼职教师占比',
+                  disabled: true
+                }
+              ]
             },
             {
               id: 2,
-              label: "2.2.教育教学能力",
+              label: '2.2.教育教学能力',
               disabled: true,
               children: [
-                
-              ],
-            },
-          ],
-        },
+
+              ]
+            }
+          ]
+        }
       ],
       defaultProps: {
-        children: "children",
-        label: "label",
-      },
-    };
+        children: 'children',
+        label: 'label'
+      }
+    }
   },
   created() {
     this.getList()
@@ -435,5 +408,5 @@ export default {
       return sort === `+${key}` ? 'ascending' : 'descending'
     }
   }
-};
+}
 </script>

@@ -1,42 +1,21 @@
 <template>
   <div class="dashboard-editor-container">
-   <h4>欢迎登录上海信息技术学校专业建设与发展质量评估系统</h4>
-   <h4>请各专业老师按照各指标的填报要求，如实填报并上传相关证明材料</h4>
-    <!-- <github-corner class="github-corner" /> -->
-
+    <h4>欢迎登录上海信息技术学校专业建设与发展质量评估系统</h4>
+    <h4>请各专业老师按照各指标的填报要求，如实填报并上传相关证明材料</h4>
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
-    <!-- <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
-    </el-row> -->
-
     <el-row :gutter="32">
-      <!-- <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <raddar-chart />
-        </div>
-      </el-col> -->
-      
+
       <el-col :xs="24" :sm="24" :lg="8">
-            <div>审批情况总览 </div>
-            系部：
-            <el-select v-model="value" class="m-2" @change="$forceUpdate()"  placeholder="" size="small">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-              专业：
-                <el-select v-model="value" class="m-2" @change="$forceUpdate()" placeholder="" size="small">
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
+        <div>审批情况总览 </div>
+        系部：
+        <el-select v-model="value" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+        专业：
+        <el-select v-model="value" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
 
         <div class="chart-wrapper">
           <pie-chart />
@@ -44,28 +23,16 @@
       </el-col>
 
       <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px">
-        <el-row :gutter="32" >
-        <todo-list />
-        </el-row>
-        
         <el-row :gutter="32">
-        <todo-list1 />
+          <todo-list />
+        </el-row>
+
+        <el-row :gutter="32">
+          <todo-list1 />
         </el-row>
       </el-col>
-      
-    </el-row>
 
-    <!-- <el-row :gutter="8">
-      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;">
-        <transaction-table />
-      </el-col>
-      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
-        <todo-list />
-      </el-col>
-      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
-        <box-card />
-      </el-col>
-    </el-row> -->
+    </el-row>
   </div>
 </template>
 
@@ -100,29 +67,27 @@ const lineChartData = {
   }
 }
 
-const options = [
-  {
-    value: '智能制造',
-    label: '智能制造',
-  },
-  {
-    value: '材料与检测',
-    label: '材料与检测',
-  },
-  {
-    value: '信息技术系',
-    label: '信息技术系',
-  },
-  {
-    value: '商务管理系',
-    label: '商务管理系',
-  },
-  {
-    value: '中本贯通',
-    label: '中本贯通',
-  },
+const options = [{
+  value: '智能制造',
+  label: '智能制造'
+},
+{
+  value: '材料与检测',
+  label: '材料与检测'
+},
+{
+  value: '信息技术系',
+  label: '信息技术系'
+},
+{
+  value: '商务管理系',
+  label: '商务管理系'
+},
+{
+  value: '中本贯通',
+  label: '中本贯通'
+}
 ]
-
 
 export default {
   name: 'DashboardAdmin',
@@ -142,44 +107,38 @@ export default {
     return {
       options
     }
-    // return {
-    //   lineChartData: lineChartData.newVisitis
-    // }
   },
   methods: {
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
     }
   }
-//   abc(val) {
-//   this.$set(this.value, val )
-// }
 }
 </script>
 
 <style lang="scss" scoped>
 .dashboard-editor-container {
-  padding: 32px;
-  background-color: rgb(240, 242, 245);
-  position: relative;
+    padding: 32px;
+    background-color: rgb(240, 242, 245);
+    position: relative;
 
-  .github-corner {
-    position: absolute;
-    top: 0px;
-    border: 0;
-    right: 0;
-  }
+    .github-corner {
+        position: absolute;
+        top: 0px;
+        border: 0;
+        right: 0;
+    }
 
-  .chart-wrapper {
-    background: #fff;
-    padding: 126px 66px 0;
-    margin-bottom: 62px;
-  }
+    .chart-wrapper {
+        background: #fff;
+        padding: 126px 66px 0;
+        margin-bottom: 62px;
+    }
 }
 
 @media (max-width:1024px) {
-  .chart-wrapper {
-    padding: 8px;
-  }
+    .chart-wrapper {
+        padding: 8px;
+    }
 }
 </style>
