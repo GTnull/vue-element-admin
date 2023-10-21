@@ -84,19 +84,43 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/documentation',
+    path: '/report',
     component: Layout,
     children: [
       {
         path: 'index',
-        component: () => import('@/views/documentation/index'),
+        component: () => import('@/views/report/index'),
         name: '数据填报',
         meta: { title: '数据填报', icon: 'documentation', affix: true }
       }
     ]
   },
   {
-    path: '/documentation',
+    path: '/review',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/review/index'),
+        name: '数据审批',
+        meta: { title: '数据审批', icon: 'documentation', affix: true }
+      }
+    ]
+  },
+  {
+    path: '/admincheck',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/admincheck/index'),
+        name: '数据查看',
+        meta: { title: '数据查看', icon: 'documentation', affix: true }
+      }
+    ]
+  },
+  {
+    path: '/report',
     component: Layout,
     children: [
       {
