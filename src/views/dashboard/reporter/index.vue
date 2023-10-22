@@ -1,75 +1,162 @@
 <template>
-
   <div class="dashboard-editor-container">
-    reporter 的首页页面
-    <!-- <div>dsfsdfdsflkj</div>
-    <div class=" clearfix">
-      <pan-thumb :image="avatar" style="float: left">
-        Your roles:
-        <span v-for="item in roles" :key="item" class="pan-info-roles">{{ item }}</span>
-      </pan-thumb>
-      <github-corner style="position: absolute; top: 0px; border: 0; right: 0;" />
-      <div class="info-container">
-        <span class="display_name">{{ name }}</span>
-        <span style="font-size:20px;padding-top:20px;display:inline-block;">Editor's Dashboard</span>
+    <h4>欢迎登录上海信息技术学校专业建设与发展质量评估系统</h4>
+    <h4>请各专业老师按照各指标的填报要求，如实填报并上传相关证明材料</h4>
+    <panel-group @handleSetLineChartData="handleSetLineChartData" />
+
+    <el-row :gutter="40">
+
+      <el-col :span="12">
+        <el-card class="box-card">
+          <div>审批情况总览 </div>
+          系部：
+          <el-select v-model="value" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+          专业：
+          <el-select v-model="value" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+
+          <div class="chart-wrapper">
+            <pie-chart />
+          </div>
+        </el-card>
+
+      </el-col>
+
+      <el-col :span="12">
+        <!-- <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <i class="el-icon-s-order"></i>
+        <span>卡片名称</span>
       </div>
-    </div>
-    <div>
-      <img :src="emptyGif" class="emptyGif">
-    </div> -->
+      <div style="margin-left: 100px;">
+        <div v-for= "x  in todolistData"><el-radio v-model="radio" label="1">{{x}}</el-radio></div>
+      </div>
+
+        </el-card> -->
+
+        <el-row :gutter="0">
+          <todo-list />
+        </el-row>
+
+        <el-row :gutter="0">
+          <todo-list1 />
+        </el-row>
+      </el-col>
+
+    </el-row>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import GithubCorner from '@/components/GithubCorner'
+import PanelGroup from './components/PanelGroup'
+import LineChart from './components/LineChart'
+import RaddarChart from './components/RaddarChart'
+import PieChart from './components/PieChart'
+import TransactionTable from './components/TransactionTable'
+import TodoList from './components/TodoList'
+import TodoList1 from './components/TodoList1'
+import BoxCard from './components/BoxCard'
+const todolistData = [
+  'abc',
+  'dsfdsf',
+  'sdfsdfsdf'
+]
+
+const lineChartData = {
+  newVisitis: {
+    expectedData: [100, 120, 161, 134, 105, 160, 165],
+    actualData: [120, 82, 91, 154, 162, 140, 145]
+  },
+  messages: {
+    expectedData: [200, 192, 120, 144, 160, 130, 140],
+    actualData: [180, 160, 151, 106, 145, 150, 130]
+  },
+  purchases: {
+    expectedData: [80, 100, 121, 104, 105, 90, 100],
+    actualData: [120, 90, 100, 138, 142, 130, 130]
+  },
+  shoppings: {
+    expectedData: [130, 140, 141, 142, 145, 150, 160],
+    actualData: [120, 82, 91, 154, 162, 140, 130]
+  }
+}
+
+const options = [{
+  value: '智能制造',
+  label: '智能制造'
+},
+{
+  value: '材料与检测',
+  label: '材料与检测'
+},
+{
+  value: '信息技术系',
+  label: '信息技术系'
+},
+{
+  value: '商务管理系',
+  label: '商务管理系'
+},
+{
+  value: '中本贯通',
+  label: '中本贯通'
+}
+]
 
 export default {
-  name: 'DashboardEditor',
-  components: { },
+  name: 'DashboardAdmin',
+  components: {
+    GithubCorner,
+    PanelGroup,
+    LineChart,
+    RaddarChart,
+    PieChart,
+    TransactionTable,
+    TodoList,
+    TodoList1,
+    BoxCard
+  },
   data() {
     return {
-      emptyGif: 'https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3'
+      options,
+      todolistData
     }
   },
-  computed: {
-    ...mapGetters([
-      'name',
-      'avatar',
-      'roles'
-    ])
+  methods: {
+    handleSetLineChartData(type) {
+      this.lineChartData = lineChartData[type]
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .emptyGif {
-    display: block;
-    width: 45%;
-    margin: 0 auto;
-  }
+.dashboard-editor-container {
+    padding: 32px;
+    background-color: rgb(240, 242, 245);
+    position: relative;
 
-  .dashboard-editor-container {
-    background-color: #e3e3e3;
-    min-height: 100vh;
-    padding: 50px 60px 0px;
-    .pan-info-roles {
-      font-size: 12px;
-      font-weight: 700;
-      color: #333;
-      display: block;
-    }
-    .info-container {
-      position: relative;
-      margin-left: 190px;
-      height: 150px;
-      line-height: 200px;
-      .display_name {
-        font-size: 48px;
-        line-height: 48px;
-        color: #212121;
+    .github-corner {
         position: absolute;
-        top: 25px;
-      }
+        top: 0px;
+        border: 0;
+        right: 0;
     }
-  }
+
+    .chart-wrapper {
+        background: #fff;
+        padding: 126px 66px 0;
+        margin-bottom: 62px;
+    }
+}
+
+@media (max-width:1024px) {
+    .chart-wrapper {
+        padding: 8px;
+    }
+}
 </style>
