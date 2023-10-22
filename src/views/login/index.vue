@@ -68,6 +68,7 @@ export default {
   components: { SocialSign },
   data() {
     const validateUsername = (rule, value, callback) => {
+      // 检查用户是否正确
       if (!validUsername(value)) {
         callback(new Error('Please enter the correct user name'))
       } else {
@@ -144,7 +145,7 @@ export default {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
-              if(this.loginForm.username==='admin') {
+              if (this.loginForm.username === 'admin') {
                 console.log('ok')
               }
               console.log(this.loginForm)

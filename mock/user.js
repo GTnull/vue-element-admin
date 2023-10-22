@@ -6,8 +6,14 @@ const tokens = {
   editor: {
     token: 'editor-token'
   },
+  leader: {
+    token: 'leader-token'
+  },
   reviewer: {
     token: 'reviewer-token'
+  },
+  reporter: {
+    token: 'reporter-token'
   }
 }
 
@@ -24,16 +30,28 @@ const users = {
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Normal Editor'
   },
+  'leader-token': {
+    roles: ['leader'],
+    introduction: 'I am an leader',
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    name: 'Normal leader'
+  },
   'reviewer-token': {
     roles: ['reviewer'],
     introduction: 'I am an reviewer',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Normal Reviewer'
+  },
+  'reporter-token': {
+    roles: ['reporter'],
+    introduction: 'I am an reporter',
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    name: 'Normal reporter'
   }
 }
 
 module.exports = [
-  // user login
+  // 登录接口
   {
     url: '/vue-element-admin/user/login',
     type: 'post',
@@ -42,13 +60,15 @@ module.exports = [
       const token = tokens[username]
 
       // mock error
-      if (!token) {
-        return {
-          code: 60204,
-          message: 'Account and password are incorrect.'
-        }
-      }
-
+      // if (!token) {
+      //   return {
+      //     code: 60204,
+      //     message: 'Account and password are incorrect.'
+      //   }
+      // }
+      console.log('/vue-element-admin/user/login begin')
+      console.log(token)
+      console.log('/vue-element-admin/user/login end')
       return {
         code: 20000,
         data: token

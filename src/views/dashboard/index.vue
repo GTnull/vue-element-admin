@@ -8,15 +8,16 @@
 import { mapGetters } from 'vuex'
 import adminDashboard from './admin'
 import editorDashboard from './editor'
+import reporterDashboard from './reporter'
 import reviewerDashboard from './reviewer'
-
+import leaderDashboard from './leader'
 
 export default {
-  name: '系统首页',
-  components: { adminDashboard, editorDashboard, reviewerDashboard },
+  name: '',
+  components: { adminDashboard, editorDashboard, leaderDashboard, reviewerDashboard, reporterDashboard },
   data() {
     return {
-      currentRole: 'adminDashboard'
+      currentRole: ''
     }
   },
   computed: {
@@ -25,9 +26,8 @@ export default {
     ])
   },
   created() {
-    if (!this.roles.includes('admin')) {
-      this.currentRole = 'editorDashboard'
-    }
+    // 根据不同用户切换首页
+    this.currentRole = this.roles[0] + 'Dashboard'
   }
 }
 </script>

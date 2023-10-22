@@ -1,5 +1,7 @@
 <template>
-  <div id="tags-view-container" class="tags-view-container">
+  <div />
+  <!-- 系统首页下方的选择 -->
+  <!-- <div id="tags-view-container" class="tags-view-container">
     <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
       <router-link
         v-for="tag in visitedViews"
@@ -22,7 +24,7 @@
       <li @click="closeOthersTags">Close Others</li>
       <li @click="closeAllTags(selectedTag)">Close All</li>
     </ul>
-  </div>
+  </div> -->
 </template>
 
 <script>

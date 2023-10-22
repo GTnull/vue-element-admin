@@ -81,7 +81,7 @@ const asyncRoutes = [
     meta: {
       title: 'Permission',
       icon: 'lock',
-      roles: ['admin', 'editor']
+      roles: ['admin', 'editor', 'leader', 'reviewer', 'reporter']
     },
     children: [
       {
@@ -112,7 +112,6 @@ const asyncRoutes = [
       }
     ]
   },
-
   {
     path: '/icon',
     component: 'layout/Layout',
