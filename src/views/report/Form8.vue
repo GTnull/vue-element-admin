@@ -1,26 +1,38 @@
 <template>
   <el-col :span="16">
-    <h4>指标： 1.1.1.获得市级及以上荣誉</h4>
+    <h4>指标： 2.1.2.高级职业专任教师占比</h4>
 
     <el-card class="box-card" shadow="never">
-      <div>指标填报说明：获得上海市级及以上荣誉数量。
-        如：国家级教育教学成果奖、上海市教育教学成果奖、产教融合试点专业、上海市中等职业学校示范品牌及试点专业、
-        市教委组织的教学改革试点专业、中职专业及贯通专业评估获评“优秀”等累加数量。</div>
+      <div>指标填报说明：高级职称的专任教师占专业专任教师的百分比，即高级职称的专任教师/专业专任教师x100%。</div>
+      <el-form ref="form" :model="form" label-width="200px">
+        <el-form-item label="高级职称的专任教师人数：" required="true">
+          <el-input v-model="form.inputReal" placeholder="0" />
+        </el-form-item>
+        <el-form-item label="专业专任教师人数：" required="true">
+          <el-input v-model="form.inputPlan" placeholder="0" />
+        </el-form-item>
+      </el-form>
 
     </el-card>
+    <el-button
+      class="filter-item"
+      style="margin-left: 10px;"
+      type="primary"
+      icon="el-icon-edit"
+      @click="handleCreate"
+    >
+      添加教师
+    </el-button>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="荣誉名称：" prop="type">
+        <el-form-item label="教师名称：" prop="type">
           <el-select v-model="temp.type" class="filter-item" placeholder="">
             <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
           </el-select>
         </el-form-item>
-        <el-form-item label="获得时间：" prop="timestamp">
+        <el-form-item label="高级职称获得时间：" prop="timestamp">
           <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="" />
-        </el-form-item>
-        <el-form-item label="获得教师：" prop="title">
-          <el-input v-model="temp.title" />
         </el-form-item>
 
         <el-form-item label="证书附件：">
@@ -98,7 +110,7 @@ const consttableData = [{
 ]
 
 export default {
-  name: 'Form1',
+  name: 'Form8',
 
   data() {
     return {
@@ -119,17 +131,16 @@ export default {
       calendarTypeOptions
     }
   },
-  created() {
-    this.initData()
-  },
   methods: {
     resetTemp() {
       this.temp = {
-        date: new Date(),
-        name: '',
-        address: '',
-        attachment: '',
-        id: undefined
+        id: undefined,
+        importance: 1,
+        remark: '',
+        timestamp: new Date(),
+        title: '',
+        status: 'published',
+        type: ''
       }
     },
     handleCreate() {
@@ -141,10 +152,18 @@ export default {
       })
     },
     createData() {
-      const data = this.temp
-      this.tableData.push(data)
       this.$refs['dataForm'].validate((valid) => {
+        this.tableData.push({
+          date: 'dsfdsfl',
+          name: '2022.09',
+          address: '重要奖项',
+          attachment: '',
+          act: '修改 删除'
+        })
         if (valid) {
+          console.log(this.temp)
+          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
+          this.temp.author = 'vue-element-admin'
           this.dialogFormVisible = false
           this.$notify({
             title: 'Success',
@@ -191,39 +210,7 @@ export default {
         duration: 2000
       })
       this.list.splice(index, 1)
-    },
-    save() {
-      // 子组件的保存方法, 用于父组件进行调用
-      console.log('Form1 子组件的保存方法被调用了')
-      localStorage.setItem('Form1', generateJson(this.tableData))
-    },
-    initData() {
-      // todo 从后端取数据，放到tableData
-      // 从缓存中取数据，并设置到数据中
-      const localData = localStorage.getItem('Form1')
-      this.tableData = parseJson(localData) || consttableData
     }
   }
 }
-// 解析 JSON 字符串为对象
-function parseJson(jsonString) {
-  try {
-    return JSON.parse(jsonString)
-  } catch (error) {
-    console.error('解析 JSON 失败:', error)
-    return null
-  }
-}
-
-// 将对象转换为格式化的 JSON 字符串
-function generateJson(data) {
-  try {
-    return JSON.stringify(data, null, 2) // 使用缩进为2的格式化
-  } catch (error) {
-    console.error('生成 JSON 失败:', error)
-    return null
-  }
-}
-
 </script>
-

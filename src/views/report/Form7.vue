@@ -1,0 +1,33 @@
+<template>
+  <el-col :span="18">
+    <h4>指标： 2.1.1.“双师型”专任教师占比</h4>
+
+    <el-card class="box-card" shadow="never">
+      <div>指标填报说明：经学校认定的“双师型”专任教师占专业专任教师人数的百分比，即双师型专任教师人数/专业专任教师人数x100%。</div>
+      <el-form ref="form" :model="form" label-width="200px">
+        <el-form-item label="双师型专任教师人数：" required="true">
+          <el-input v-model="form.inputReal" placeholder="0" />
+        </el-form-item>
+        <el-form-item label="专业专任教师人数：" required="true">
+          <el-input v-model="form.inputPlan" placeholder="0" />
+        </el-form-item>
+      </el-form>
+    </el-card>
+
+  </el-col>
+</template>
+
+<script>
+export default {
+  name: 'Form7',
+
+  data() {
+    return {
+      form: {
+        inputPlan: '',
+        inputReal: ''
+      }
+    }
+  }
+}
+</script>

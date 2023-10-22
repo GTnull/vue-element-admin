@@ -1,52 +1,61 @@
 <template>
   <div class="dashboard-editor-container">
-    <h4>欢迎登录上海信息技术学校专业建设与发展质量评估系统</h4>
-    <h4>请各专业老师按照各指标的填报要求，如实填报并上传相关证明材料</h4>
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
     <el-row :gutter="40">
 
       <el-col :span="12">
         <el-card class="box-card">
-          <div>审批情况总览 </div>
-        系部：
-        <el-select v-model="value" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
-        专业：
-        <el-select v-model="value" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
+          <div>专业排名: </div>
+          学年：
+          <el-select v-model="value1" placeholder="" size="small" @change="$forceUpdate()">
+            <el-option v-for="item in schoolYear" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+          排名区间：
+          <el-select v-model="value2" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
+            <el-option v-for="item in rank" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
 
-        <div class="chart-wrapper">
-          <pie-chart />
-        </div>
+          <div class="chart-wrapper">
+            <bar-chart />
+          </div>
         </el-card>
-        
+
       </el-col>
 
       <el-col :span="12">
-        <!-- <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <i class="el-icon-s-order"></i>
-        <span>卡片名称</span>
-      </div>
-      <div style="margin-left: 100px;">
-        <div v-for= "x  in todolistData"><el-radio v-model="radio" label="1">{{x}}</el-radio></div>
-      </div>
-        
-        </el-card> -->
+        <el-card class="box-card">
+          <div> 专业建设趋势分析：</div>
+          时间：
+          <el-select v-model="value3" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
+            <el-option v-for="item in schoolYear" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+          专业：
+          <el-select v-model="value4" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
+            <el-option v-for="item in subjects" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+          <div class="chart-wrapper">
+            <line-chart :chart-data="lineChartData" />
+          </div>
+        </el-card>
 
-        <el-row :gutter="0">
-          <todo-list />
-        </el-row>
-
-        <el-row :gutter="0">
-          <todo-list1 />
-        </el-row>
       </el-col>
 
-    </el-row>
+    </el-row :span="24">
+    <el-card class="box-card">
+      <div> 专业建设趋势分析：</div>
+      时间：
+      <el-select v-model="value5" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
+        <el-option v-for="item in schoolYear" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+      专业：
+      <el-select v-model="value6" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
+        <el-option v-for="item in subjects" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+      <div class="chart-wrapper" stype="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+        <line-chart :chart-data="lineChartData" />
+      </div>
+    </el-card>
+    <el-row />
   </div>
 </template>
 
@@ -62,9 +71,9 @@ import TodoList from './components/TodoList'
 import TodoList1 from './components/TodoList1'
 import BoxCard from './components/BoxCard'
 const todolistData = [
-  "abc",
-  "dsfdsf",
-  "sdfsdfsdf"
+  'abc',
+  'dsfdsf',
+  'sdfsdfsdf'
 ]
 
 const lineChartData = {
@@ -107,6 +116,27 @@ const options = [{
   label: '中本贯通'
 }
 ]
+const subjects = [
+  { value: '计算机网络技术', label: '计算机网络技术' },
+  { value: '分析与检验技术', label: '分析与检验技术' },
+  { value: '直播电商服务', label: '直播电商服务' }
+]
+const schoolYear = [{
+  value: '2022-2023学年',
+  label: '2022-2023学年'
+},
+{
+  value: '2021-2022学年',
+  label: '2021-2022学年'
+}
+]
+const rank = [
+  { value: '0~20%', label: '0~20%' },
+  { value: '20~40%', label: '20~40%' },
+  { value: '40~60%', label: '40~60%' },
+  { value: '60~80%', label: '60~80%' },
+  { value: '80~100%', label: '80~100%' }
+]
 
 export default {
   name: 'DashboardAdmin',
@@ -125,7 +155,10 @@ export default {
   data() {
     return {
       options,
-      todolistData
+      todolistData,
+      schoolYear,
+      rank,
+      subjects
     }
   },
   methods: {
