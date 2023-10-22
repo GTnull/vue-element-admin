@@ -1,75 +1,197 @@
 <template>
-
   <div class="dashboard-editor-container">
-    leader 的首页页面
-    <!-- <div>dsfsdfdsflkj</div>
-    <div class=" clearfix">
-      <pan-thumb :image="avatar" style="float: left">
-        Your roles:
-        <span v-for="item in roles" :key="item" class="pan-info-roles">{{ item }}</span>
-      </pan-thumb>
-      <github-corner style="position: absolute; top: 0px; border: 0; right: 0;" />
-      <div class="info-container">
-        <span class="display_name">{{ name }}</span>
-        <span style="font-size:20px;padding-top:20px;display:inline-block;">Editor's Dashboard</span>
+
+    <el-row :gutter="40">
+
+      <el-col :span="12">
+        <el-card class="box-card">
+          <div>专业排名: </div>
+          学年：
+          <el-select v-model="value1" placeholder="" size="small" @change="$forceUpdate()">
+            <el-option v-for="item in schoolYear" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+          排名区间：
+          <el-select v-model="value2" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
+            <el-option v-for="item in rank" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+
+          <div class="chart-wrapper">
+            <bar-chart />
+          </div>
+        </el-card>
+
+      </el-col>
+
+      <el-col :span="12">
+        <el-card class="box-card">
+          <div> 专业建设趋势分析：</div>
+          时间：
+          <el-select v-model="value3" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
+            <el-option v-for="item in schoolYear" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+          专业：
+          <el-select v-model="value4" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
+            <el-option v-for="item in subjects" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+          <div class="chart-wrapper">
+            <line-chart :chart-data="lineChartData" />
+          </div>
+        </el-card>
+
+      </el-col>
+
+    </el-row :span="24">
+    <el-card class="box-card">
+      <div> 专业建设趋势分析：</div>
+      时间：
+      <el-select v-model="value5" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
+        <el-option v-for="item in schoolYear" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+      专业：
+      <el-select v-model="value6" class="m-2" placeholder="" size="small" @change="$forceUpdate()">
+        <el-option v-for="item in subjects" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+      <div class="chart-wrapper" stype="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+        <line-chart :chart-data="lineChartData" />
       </div>
-    </div>
-    <div>
-      <img :src="emptyGif" class="emptyGif">
-    </div> -->
+    </el-card>
+    <el-row />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import GithubCorner from '@/components/GithubCorner'
+import PanelGroup from './components/PanelGroup'
+import LineChart from './components/LineChart'
+import RaddarChart from './components/RaddarChart'
+import PieChart from './components/PieChart'
+import BarChart from './components/BarChart'
+import TransactionTable from './components/TransactionTable'
+import TodoList from './components/TodoList'
+import TodoList1 from './components/TodoList1'
+import BoxCard from './components/BoxCard'
+const todolistData = [
+  'abc',
+  'dsfdsf',
+  'sdfsdfsdf'
+]
+
+const lineChartData = {
+  newVisitis: {
+    expectedData: [100, 120, 161, 134, 105, 160, 165],
+    actualData: [120, 82, 91, 154, 162, 140, 145]
+  },
+  messages: {
+    expectedData: [200, 192, 120, 144, 160, 130, 140],
+    actualData: [180, 160, 151, 106, 145, 150, 130]
+  },
+  purchases: {
+    expectedData: [80, 100, 121, 104, 105, 90, 100],
+    actualData: [120, 90, 100, 138, 142, 130, 130]
+  },
+  shoppings: {
+    expectedData: [130, 140, 141, 142, 145, 150, 160],
+    actualData: [120, 82, 91, 154, 162, 140, 130]
+  }
+}
+
+const options = [{
+  value: '智能制造',
+  label: '智能制造'
+},
+{
+  value: '材料与检测',
+  label: '材料与检测'
+},
+{
+  value: '信息技术系',
+  label: '信息技术系'
+},
+{
+  value: '商务管理系',
+  label: '商务管理系'
+},
+{
+  value: '中本贯通',
+  label: '中本贯通'
+}
+]
+const subjects = [
+  { value: '计算机网络技术', label: '计算机网络技术' },
+  { value: '分析与检验技术', label: '分析与检验技术' },
+  { value: '直播电商服务', label: '直播电商服务' }
+]
+const schoolYear = [{
+  value: '2022-2023学年',
+  label: '2022-2023学年'
+},
+{
+  value: '2021-2022学年',
+  label: '2021-2022学年'
+}
+]
+const rank = [
+  { value: '0~20%', label: '0~20%' },
+  { value: '20~40%', label: '20~40%' },
+  { value: '40~60%', label: '40~60%' },
+  { value: '60~80%', label: '60~80%' },
+  { value: '80~100%', label: '80~100%' }
+]
 
 export default {
-  name: 'DashboardEditor',
-  components: { },
+  name: 'DashboardAdmin',
+  components: {
+    GithubCorner,
+    PanelGroup,
+    LineChart,
+    RaddarChart,
+    PieChart,
+    BarChart,
+    TransactionTable,
+    TodoList,
+    TodoList1,
+    BoxCard
+  },
   data() {
     return {
-      emptyGif: 'https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3'
+      options,
+      todolistData,
+      schoolYear,
+      rank,
+      subjects
     }
   },
-  computed: {
-    ...mapGetters([
-      'name',
-      'avatar',
-      'roles'
-    ])
+  methods: {
+    handleSetLineChartData(type) {
+      this.lineChartData = lineChartData[type]
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .emptyGif {
-    display: block;
-    width: 45%;
-    margin: 0 auto;
-  }
+.dashboard-editor-container {
+    padding: 32px;
+    background-color: rgb(240, 242, 245);
+    position: relative;
 
-  .dashboard-editor-container {
-    background-color: #e3e3e3;
-    min-height: 100vh;
-    padding: 50px 60px 0px;
-    .pan-info-roles {
-      font-size: 12px;
-      font-weight: 700;
-      color: #333;
-      display: block;
-    }
-    .info-container {
-      position: relative;
-      margin-left: 190px;
-      height: 150px;
-      line-height: 200px;
-      .display_name {
-        font-size: 48px;
-        line-height: 48px;
-        color: #212121;
+    .github-corner {
         position: absolute;
-        top: 25px;
-      }
+        top: 0px;
+        border: 0;
+        right: 0;
     }
-  }
+
+    .chart-wrapper {
+        background: #fff;
+        padding: 126px 66px 0;
+        margin-bottom: 62px;
+    }
+}
+
+@media (max-width:1024px) {
+    .chart-wrapper {
+        padding: 8px;
+    }
+}
 </style>

@@ -30,7 +30,7 @@
               :loading="loading"
               size="mini"
               type="primary"
-              @click="dynamicChildSaveMethod"
+              @click="dialogVisible = true"
             >
               打回
             </el-button>
@@ -44,6 +44,34 @@
             </el-button>
           </div>
         </el-row>
+
+        <el-dialog
+          title="打回"
+          :visible.sync="dialogVisible"
+          width="30%"
+          :before-close="handleClose"
+        >
+          <el-row>
+            <span>审批结果：</span>   <el-radio-group v-model="radio">
+              <el-radio :label="3">打回</el-radio>
+              <el-radio :label="6">拒绝</el-radio>
+            </el-radio-group>
+          </el-row>
+
+          <el-row>
+            <el-form ref="form" :model="form">
+              <el-form-item label="拒绝原因： " required="true">
+                <el-input v-model="form.reason" placeholder="请填写拒绝原因" />
+              </el-form-item>
+            </el-form>
+          </el-row>
+
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="handleReject">确 定</el-button>
+          </span>
+        </el-dialog>
+
       </el-col>
     </el-row>
   </div>
@@ -68,10 +96,21 @@ export default {
   },
   data() {
     return {
+      radio: 3,
+      form: {
+        reason: ''
+      },
       selectKey: '',
       finishKey: [],
+      rejectKey: [],
       saveCompoment: '',
       dynamicChildComponentName: 'Form1',
+      dialogVisible: false,
+      dialogStatus: '',
+      textMap: {
+        update: 'Edit',
+        create: '打回'
+      },
       treeData: [
         {
           id: 1,
@@ -201,6 +240,27 @@ export default {
     this.getTreeLeafNodeList(this.treeData)
   },
   methods: {
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done()
+        })
+        .catch(_ => {})
+    },
+    handleReject() {
+      this.dialogVisible = false
+      const currentNode = this.$refs.eltree.getCurrentNode()
+      const treeFormNode = getTreeFormNode(currentNode)
+      if (treeFormNode.children !== undefined) {
+        return
+      }
+      // 如果已添加，则无需重复添加
+      if (this.rejectKey.includes(treeFormNode.id)) {
+        return
+      }
+      // 完成标识，添加当前节点
+      this.rejectKey.push(treeFormNode.id)
+    },
     setSelectTree(node) {
       this.$refs.eltree.setCurrentNode(node)
       this.$refs.eltree.setCurrentKey(node.id)
@@ -240,6 +300,20 @@ export default {
     renderContent(h, { node, data, store }) {
       // 重新渲染，如果finishKey包含当前节点，那么添加对号
       if (this.finishKey.includes(node.key)) {
+        return (
+          <span>
+            <div>
+              {' '}
+              {node.label}{' '}
+              <icon
+                class='el-icon-success'
+                style='color: green;float: right;position: absolute;right: 10px;'
+              >已通过 </icon>
+            </div>{' '}
+          </span>
+        )
+      }
+      if (this.rejectKey.includes(node.key)) {
         return (
           <span>
             <div>
