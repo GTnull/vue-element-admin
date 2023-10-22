@@ -48,6 +48,7 @@ const mutations = {
 
 const actions = {
   generateRoutes({ commit }, roles) {
+    // 根据roles参数，过滤不同的权限页签
     return new Promise(resolve => {
       let accessedRoutes
       if (roles.includes('admin')) {

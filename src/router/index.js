@@ -6,12 +6,6 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
-/* Router Modules */
-import componentsRouter from './modules/components'
-import chartsRouter from './modules/charts'
-import tableRouter from './modules/table'
-import nestedRouter from './modules/nested'
-
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -69,7 +63,7 @@ export const constantRoutes = [
     path: '/401',
     component: () => import('@/views/error-page/401'),
     hidden: true
-  },
+  }
 ]
 
 /**
@@ -98,7 +92,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/report/index'),
         name: '数据填报',
-        meta: { title: '数据填报', icon: 'documentation', affix: true, roles:['editor'] }
+        meta: { title: '数据填报', icon: 'documentation', affix: true, roles: ['editor'] }
       }
     ]
   },
@@ -136,7 +130,7 @@ export const asyncRoutes = [
         // path: 'index',
         // component: () => import('@/views/guide/index'),
         name: '数据填报',
-        meta: { title: '用户管理', icon: 'user', affix: true , roles: ['admin, editor']}
+        meta: { title: '用户管理', icon: 'user', affix: true, roles: ['admin, editor'] }
       }
     ]
   },
