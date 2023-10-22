@@ -8,41 +8,25 @@
         市教委组织的教学改革试点专业、中职专业及贯通专业评估获评“优秀”等累加数量。</div>
 
     </el-card>
-    <el-button
-      class="filter-item"
-      style="margin-left: 10px;"
-      type="primary"
-      icon="el-icon-edit"
-      @click="handleCreate"
-    >
-      添加荣誉
-    </el-button>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="荣誉名称：" prop="honorId">
-          <el-select v-model="temp.honorId" class="filter-item" placeholder="">
-            <el-option v-for="item in honorList" :key="item.key" :label="item.display_name" :value="item.key" />
+        <el-form-item label="荣誉名称：" prop="type">
+          <el-select v-model="temp.type" class="filter-item" placeholder="">
+            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
           </el-select>
         </el-form-item>
-        <el-form-item label="获得时间：" prop="time">
-          <el-date-picker v-model="temp.time" type="datetime" placeholder="" />
+        <el-form-item label="获得时间：" prop="timestamp">
+          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="" />
         </el-form-item>
-        <el-form-item label="获得教师：" prop="teacher">
-          <el-input v-model="temp.teacher" />
+        <el-form-item label="获得教师：" prop="title">
+          <el-input v-model="temp.title" />
         </el-form-item>
 
         <el-form-item label="证书附件：">
-          <el-upload
-            class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            multiple
-            :limit="3"
-            :on-exceed="handleExceed"
-            :file-list="fileList"
-          >
-            <el-button size="small" type="primary">上传</el-button>
-          </el-upload>
+          <el-button :loading="loading" style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">
+            上传
+          </el-button>
 
         </el-form-item>
 
@@ -68,17 +52,11 @@
     </el-dialog>
 
     <el-table :data="tableData" style="width: 100%" :header-cell-style="{ background: '#FFDEAD', color: '#333' }">
-      <el-table-column prop="honorName" label="荣誉名称" width="150" />
-      <el-table-column prop="time" label="获得时间" width="80" />
-      <el-table-column prop="teacher" label="获得教师" />
-      <el-table-column prop="attachment" label="证书附件">
-        <template slot-scope="scope">
-          <!--todo 使用el-image错误 -->
-          <img :src="scope.row.attachment">
-        </template>
-
-      </el-table-column>
-      <el-table-column prop="action" label="操作">
+      <el-table-column prop="date" label="荣誉名称" width="150" />
+      <el-table-column prop="name" label="获得时间" width="80" />
+      <el-table-column prop="address" label="获得教师" />
+      <el-table-column prop="attachment" label="证书附件" />
+      <el-table-column prop="act" label="操作">
         <a style="color: blue"> 修改 删除</a>
       </el-table-column>
     </el-table>
@@ -86,44 +64,36 @@
 </template>
 
 <script>
-const honorList = [{
-  key: '1',
+const calendarTypeOptions = [{
+  key: 'CN',
   display_name: '荣誉1'
 },
 {
-  key: '2',
+  key: 'US',
   display_name: '荣誉2'
 },
 {
-  key: '3',
+  key: 'JP',
   display_name: '荣誉3'
 },
 {
-  key: '4',
+  key: 'EU',
   display_name: '荣誉4'
-}, {
-  key: '5',
-  display_name: '上海市教育教学成果奖'
-}, {
-  key: '6',
-  display_name: '产教融合试点专业'
 }
 ]
 const consttableData = [{
-  honorId: '5',
-  honorName: '上海市教育教学成果奖',
-  time: '2022.09',
-  teacher: '章三',
-  attachment: './img/bird.jpeg',
-  action: '修改 删除'
+  date: '上海市教育教学成果奖',
+  name: '2022.09',
+  address: '重要奖项',
+  attachment: '',
+  act: '修改 删除'
 },
 {
-  honorId: '6',
-  honorName: '产教融合试点专业',
-  time: '2022.09',
-  teacher: '重要奖项',
-  attachment: 'img/bird.jpeg',
-  action: '修改 删除'
+  date: '产教融合试点专业',
+  name: '2022.09',
+  address: '重要奖项',
+  attachment: '',
+  act: '修改 删除'
 }
 ]
 
@@ -138,30 +108,28 @@ export default {
         update: 'Edit',
         create: '添加荣誉'
       },
-      rules: {
-        honorId: [
-          { required: true, message: '荣誉名称不能为空', trigger: 'blur' }
-          // 其他验证规则
-        ]
-        // 其他表单字段的验证规则
+      temp: {
+        date: new Date(),
+        name: '',
+        address: '',
+        attachment: '',
+        id: undefined
       },
-      temp: {},
       dialogFormVisible: false,
-      honorList
+      calendarTypeOptions
     }
   },
   created() {
-    this.resetTemp()
     this.initData()
   },
   methods: {
     resetTemp() {
       this.temp = {
-        id: undefined,
-        honorId: undefined,
-        time: new Date(),
-        teacher: '',
-        attachment: ''
+        date: new Date(),
+        name: '',
+        address: '',
+        attachment: '',
+        id: undefined
       }
     },
     handleCreate() {
@@ -173,18 +141,10 @@ export default {
       })
     },
     createData() {
+      const data = this.temp
+      this.tableData.push(data)
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.temp.honorName = honorList.find((honor) => honor.key === this.temp.honorId).display_name
-          // todo 修改成dayjs
-          // this.temp.time = dayjs(this.temp.time).format('YYYY-MM')
-          const date = new Date(this.temp.time)
-          const year = date.getFullYear()
-          const month = (date.getMonth() + 1).toString().padStart(2, '0') // 获取月份，并确保是两位数
-
-          this.temp.time = `${year}-${month}`
-          const data = this.temp
-          this.tableData.push(data)
           this.dialogFormVisible = false
           this.$notify({
             title: 'Success',
@@ -209,11 +169,16 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          this.$notify({
-            title: 'Success',
-            message: 'Update Successfully',
-            type: 'success',
-            duration: 2000
+          updateArticle(tempData).then(() => {
+            const index = this.list.findIndex(v => v.id === this.temp.id)
+            this.list.splice(index, 1, this.temp)
+            this.dialogFormVisible = false
+            this.$notify({
+              title: 'Success',
+              message: 'Update Successfully',
+              type: 'success',
+              duration: 2000
+            })
           })
         }
       })
@@ -231,12 +196,6 @@ export default {
       // 子组件的保存方法, 用于父组件进行调用
       console.log('Form1 子组件的保存方法被调用了')
       localStorage.setItem('Form1', generateJson(this.tableData))
-      this.$notify({
-        title: '保存成功',
-        message: '保存成功',
-        type: 'success',
-        duration: 2000
-      })
     },
     initData() {
       // todo 从后端取数据，放到tableData
@@ -267,3 +226,4 @@ function generateJson(data) {
 }
 
 </script>
+
