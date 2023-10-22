@@ -1,7 +1,7 @@
 <template>
   
   <div class="dashboard-editor-container">
-    editor
+    reviewer
     <!-- <div>dsfsdfdsflkj</div>
     <div class=" clearfix">
       <pan-thumb :image="avatar" style="float: left">

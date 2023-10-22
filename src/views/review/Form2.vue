@@ -8,8 +8,8 @@
     
     <!-- TODO：必填项设置 -->
     <el-card> 
-        <el-row>专业实际招生人数： <el-input v-model="inputReal" placeholder="请输入内容" style="width:100px;"></el-input></el-row>
-        <el-row>专业计划招生人数： <el-input v-model="inputPlan" placeholder="请输入内容" style="width:100px;"></el-input></el-row>
+        <el-row>专业实际招生人数： <el-input v-model="inputReal" placeholder="0" style="width:100px;"></el-input></el-row>
+        <el-row>专业计划招生人数： <el-input v-model="inputPlan" placeholder="0" style="width:100px;"></el-input></el-row>
         
     </el-card>
     

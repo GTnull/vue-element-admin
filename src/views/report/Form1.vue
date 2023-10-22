@@ -55,7 +55,7 @@
         </span>
     </el-dialog>
 
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="tableData" style="width: 100%" :header-cell-style="{ background: '#FFDEAD', color: '#333' }">
         <el-table-column prop="date" label="荣誉名称" width="150" />
         <el-table-column prop="name" label="获得时间" width="80" />
         <el-table-column prop="address" label="获得教师" />

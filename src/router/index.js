@@ -70,6 +70,13 @@ export const constantRoutes = [
     component: () => import('@/views/error-page/401'),
     hidden: true
   },
+]
+
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes = [
   {
     path: '/',
     component: Layout,
@@ -91,7 +98,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/report/index'),
         name: '数据填报',
-        meta: { title: '数据填报', icon: 'documentation', affix: true }
+        meta: { title: '数据填报', icon: 'documentation', affix: true, roles:['editor'] }
       }
     ]
   },
@@ -103,7 +110,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/review/index'),
         name: '数据审批',
-        meta: { title: '数据审批', icon: 'documentation', affix: true }
+        meta: { title: '数据审批', icon: 'documentation', affix: true, roles: ['admin'] }
       }
     ]
   },
@@ -115,7 +122,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/admincheck/index'),
         name: '数据查看',
-        meta: { title: '数据查看', icon: 'documentation', affix: true }
+        meta: { title: '数据查看', icon: 'documentation', affix: true, roles: ['admin'] }
       }
     ]
   },
@@ -129,7 +136,7 @@ export const constantRoutes = [
         // path: 'index',
         // component: () => import('@/views/guide/index'),
         name: '数据填报',
-        meta: { title: '用户管理', icon: 'user', affix: true }
+        meta: { title: '用户管理', icon: 'user', affix: true , roles: ['admin, editor']}
       }
     ]
   },
@@ -146,14 +153,7 @@ export const constantRoutes = [
         meta: { title: 'Profile', icon: 'user', noCache: true }
       }
     ]
-  }
-]
-
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
-export const asyncRoutes = [
+  },
   // {
   //   path: '/permission',
   //   component: Layout,

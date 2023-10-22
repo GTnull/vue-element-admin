@@ -8,10 +8,12 @@
 import { mapGetters } from 'vuex'
 import adminDashboard from './admin'
 import editorDashboard from './editor'
+import reviewerDashboard from './reviewer'
+
 
 export default {
   name: '系统首页',
-  components: { adminDashboard, editorDashboard },
+  components: { adminDashboard, editorDashboard, reviewerDashboard },
   data() {
     return {
       currentRole: 'adminDashboard'

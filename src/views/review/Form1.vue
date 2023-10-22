@@ -1,5 +1,5 @@
 <template>
-<el-col :span="12">
+<el-col :span="16">
     <h4>指标： 1.1.1.获得市级及以上荣誉</h4>
 
     <el-card class="box-card" shadow="never">
