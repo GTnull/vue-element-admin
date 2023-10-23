@@ -3,14 +3,16 @@
     <h4>指标： 1.1.1.获得市级及以上荣誉</h4>
 
     <el-card class="box-card" shadow="never">
-      <div>指标填报说明：获得上海市级及以上荣誉数量。
+      <div>
+        指标填报说明：获得上海市级及以上荣誉数量。
         如：国家级教育教学成果奖、上海市教育教学成果奖、产教融合试点专业、上海市中等职业学校示范品牌及试点专业、
-        市教委组织的教学改革试点专业、中职专业及贯通专业评估获评“优秀”等累加数量。</div>
-
+        市教委组织的教学改革试点专业、中职专业及贯通专业评估获评“优秀”等累加数量。
+      </div>
     </el-card>
     <el-button
+      v-if="identity === 'report'"
       class="filter-item"
-      style="margin-left: 10px;"
+      style="margin-left: 10px"
       type="primary"
       icon="el-icon-edit"
       @click="handleCreate"
@@ -19,10 +21,22 @@
     </el-button>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+      <el-form
+        ref="dataForm"
+        :rules="rules"
+        :model="temp"
+        label-position="left"
+        label-width="100px"
+        style="width: 400px; margin-left: 50px"
+      >
         <el-form-item label="荣誉名称：" prop="honorId">
           <el-select v-model="temp.honorId" class="filter-item" placeholder="">
-            <el-option v-for="item in honorList" :key="item.key" :label="item.display_name" :value="item.key" />
+            <el-option
+              v-for="item in honorList"
+              :key="item.key"
+              :label="item.display_name"
+              :value="item.key"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="获得时间：" prop="time">
@@ -43,31 +57,43 @@
           >
             <el-button size="small" type="primary">上传</el-button>
           </el-upload>
-
         </el-form-item>
-
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
-          取消
-        </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button @click="dialogFormVisible = false"> 取消 </el-button>
+        <el-button
+          type="primary"
+          @click="dialogStatus === 'create' ? createData() : updateData()"
+        >
           确定
         </el-button>
       </div>
     </el-dialog>
 
     <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
+      <el-table
+        :data="pvData"
+        :border="true"
+        fit
+        highlight-current-row
+        style="width: 100%"
+      >
         <el-table-column prop="key" label="Channel" />
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+        <el-button
+          type="primary"
+          @click="dialogPvVisible = false"
+        >Confirm</el-button>
       </span>
     </el-dialog>
 
-    <el-table :data="tableData" style="width: 100%" :header-cell-style="{ background: '#FFDEAD', color: '#333' }">
+    <el-table
+      :data="tableData"
+      style="width: 100%"
+      :header-cell-style="{ background: '#FFDEAD', color: '#333' }"
+    >
       <el-table-column prop="honorName" label="荣誉名称" width="150" />
       <el-table-column prop="time" label="获得时间" width="80" />
       <el-table-column prop="teacher" label="获得教师" />
@@ -76,7 +102,6 @@
         <!--todo 使用el-image错误 -->
         <i class="el-icon-picture" />
         <!-- </template> -->
-
       </el-table-column>
       <el-table-column prop="action" label="操作">
         <a style="color: blue"> 修改 删除</a>
@@ -86,50 +111,59 @@
 </template>
 
 <script>
-const honorList = [{
-  key: '1',
-  display_name: '荣誉1'
-},
-{
-  key: '2',
-  display_name: '荣誉2'
-},
-{
-  key: '3',
-  display_name: '荣誉3'
-},
-{
-  key: '4',
-  display_name: '荣誉4'
-}, {
-  key: '5',
-  display_name: '上海市教育教学成果奖'
-}, {
-  key: '6',
-  display_name: '产教融合试点专业'
-}
+const honorList = [
+  {
+    key: '1',
+    display_name: '荣誉1'
+  },
+  {
+    key: '2',
+    display_name: '荣誉2'
+  },
+  {
+    key: '3',
+    display_name: '荣誉3'
+  },
+  {
+    key: '4',
+    display_name: '荣誉4'
+  },
+  {
+    key: '5',
+    display_name: '上海市教育教学成果奖'
+  },
+  {
+    key: '6',
+    display_name: '产教融合试点专业'
+  }
 ]
-const consttableData = [{
-  honorId: '5',
-  honorName: '上海市教育教学成果奖',
-  time: '2022.09',
-  teacher: '章三',
-  attachment: './img/bird.jpeg',
-  action: '修改 删除'
-},
-{
-  honorId: '6',
-  honorName: '产教融合试点专业',
-  time: '2022.09',
-  teacher: '重要奖项',
-  attachment: 'img/bird.jpeg',
-  action: '修改 删除'
-}
+const consttableData = [
+  {
+    honorId: '5',
+    honorName: '上海市教育教学成果奖',
+    time: '2022.09',
+    teacher: '章三',
+    attachment: './img/bird.jpeg',
+    action: '修改 删除'
+  },
+  {
+    honorId: '6',
+    honorName: '产教融合试点专业',
+    time: '2022.09',
+    teacher: '重要奖项',
+    attachment: 'img/bird.jpeg',
+    action: '修改 删除'
+  }
 ]
 
 export default {
   name: 'Form1',
-
+  props: {
+    identity: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       tableData: consttableData,
@@ -175,7 +209,9 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.temp.honorName = honorList.find((honor) => honor.key === this.temp.honorId).display_name
+          this.temp.honorName = honorList.find(
+            (honor) => honor.key === this.temp.honorId
+          ).display_name
           // todo 修改成dayjs
           // this.temp.time = dayjs(this.temp.time).format('YYYY-MM')
           const date = new Date(this.temp.time)
@@ -266,5 +302,4 @@ function generateJson(data) {
     return null
   }
 }
-
 </script>

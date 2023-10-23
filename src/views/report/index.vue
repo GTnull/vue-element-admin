@@ -21,6 +21,7 @@
           <component
             :is="dynamicChildComponentName"
             :ref="dynamicChildComponentName"
+            identity="report"
           />
         </el-row>
 
