@@ -3,21 +3,33 @@
     <div class="div_2">
       <div class="div_ui"><img src="@/assets/ui.png"></div>
       <div class="div-login">
-        <div class="div-login-input">
-          <el-input
-            v-model="loginForm.username"
-            size="medium"
-            class="username-password-input"
-          />
-          <el-input
-            v-model="loginForm.password"
-            class="username-password-input"
-            show-password
-            style="margin-top: 19px"
-          />
-        </div>
+        <el-form
+          ref="loginForm"
+          :model="loginForm"
+          :rules="loginRules"
+          autocomplete="on"
+          label-position="left"
+        >
+          <div class="div-login-input">
+            <el-input
+              v-model="loginForm.username"
+              size="medium"
+              class="username-password-input"
+            />
+            <el-input
+              v-model="loginForm.password"
+              class="username-password-input"
+              show-password
+              style="margin-top: 19px"
+            />
+          </div>
+        </el-form>
         <div class="div-login-button">
-          <el-button type="primary" class="button-login">登录</el-button>
+          <el-button
+            type="primary"
+            class="button-login"
+            @click.native.prevent="handleLogin"
+          >登录</el-button>
         </div>
       </div>
       <!-- <div><el-input>abc</el-input></div> -->
@@ -70,7 +82,6 @@ export default {
       },
       passwordType: 'password',
       capsTooltip: false,
-      loading: false,
       showDialog: false,
       redirect: undefined,
       otherQuery: {}
@@ -101,7 +112,28 @@ export default {
   destroyed() {
     // window.removeEventListener('storage', this.afterQRScan)
   },
-  methods: {}
+  methods: {
+    handleLogin() {
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          this.$store.dispatch('user/login', this.loginForm)
+            .then(() => {
+              if (this.loginForm.username === 'admin') {
+                console.log('ok')
+              }
+              console.log(this.loginForm)
+              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+            })
+            .catch(() => {
+              console.log('error submit!!')
+            })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    }
+  }
 }
 </script>
 
