@@ -1,86 +1,28 @@
 <template>
-  <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
+  <div class="div_1">
+    <!-- <img src="@/assets/背景.png"> -->
+    <!-- <div class="div_1"><img src="@/assets/背景.png"></div> -->
+    <div class="div_2">
+      <!-- <div class="div_logo"><img src="@/assets/log.png"></div>
+      <div class="div_name">上海信息技术学校</div>
+      <div class="div_name2">专业建设与发展评估</div>
+      <div class="div_name3">Welcome to Shanghai Information Technology College</div> -->
+      <div class="div_ui"><img src="@/assets/ui.png"></div>
+      <el-input class="blurred-input" />
+      <!-- <div><el-input>abc</el-input></div> -->
+    </div>
 
-      <div class="title-container">
-        <h3 class="title">信校专业建设与发展质量评估系统</h3>
-      </div>
-
-      <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
-          type="text"
-          tabindex="1"
-          autocomplete="on"
-        />
-      </el-form-item>
-
-      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
-        <el-form-item prop="password">
-          <span class="svg-container">
-            <svg-icon icon-class="password" />
-          </span>
-          <el-input
-            :key="passwordType"
-            ref="password"
-            v-model="loginForm.password"
-            :type="passwordType"
-            placeholder="Password"
-            name="password"
-            tabindex="2"
-            autocomplete="on"
-            @keyup.native="checkCapslock"
-            @blur="capsTooltip = false"
-            @keyup.enter.native="handleLogin"
-          />
-          <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-          </span>
-        </el-form-item>
-      </el-tooltip>
-
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
-
-    </el-form>
-    <el-dialog title="Or connect with" :visible.sync="showDialog">
-      Can not be simulated on local, so please combine you own business simulation! ! !
-      <br>
-      <br>
-      <br>
-      <social-sign />
-    </el-dialog>
+    <!-- <div class="div_3"> abc</div> -->
   </div>
+
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
-import SocialSign from './components/SocialSignin'
 
 export default {
-  name: 'Login',
-  components: { SocialSign },
+  name: '',
+
   data() {
-    const validateUsername = (rule, value, callback) => {
-      // 检查用户是否正确
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
-    }
     return {
       loginForm: {
         username: 'admin',
@@ -124,173 +66,141 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
-    checkCapslock(e) {
-      const { key } = e
-      this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
-    },
-    showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
-      } else {
-        this.passwordType = 'password'
-      }
-      this.$nextTick(() => {
-        this.$refs.password.focus()
-      })
-    },
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm)
-            .then(() => {
-              if (this.loginForm.username === 'admin') {
-                console.log('ok')
-              }
-              console.log(this.loginForm)
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
-    },
-    getOtherQuery(query) {
-      return Object.keys(query).reduce((acc, cur) => {
-        if (cur !== 'redirect') {
-          acc[cur] = query[cur]
-        }
-        return acc
-      }, {})
-    }
+
   }
 }
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-
-$bg:#283443;
-$light_gray:#fff;
-$cursor: #fff;
-
-@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-  .login-container .el-input input {
-    color: $cursor;
-  }
+.div_1 {
+  background-image: url("../../assets/背景.png");
+  background-size: cover; /* 图像大小适应容器 */
+  background-position: center; /* 图像在容器中的位置 */
+  background-repeat: no-repeat; /* 禁止图像平铺 */
+  display: inline-block;
+  width: 1920px;
+  height: 1080px;
+}
+.div_2 {
+  margin-left: 86px;
+  margin-bottom: 61px;
+  margin-top: 106px;
+  margin-right: 182px;
+  width: 1652px;
+  height: 913px;
 }
 
-/* reset element-ui css */
-.login-container {
-  .el-input {
-    display: inline-block;
-    height: 47px;
-    width: 85%;
-
-    input {
-      background: transparent;
-      border: 0px;
-      -webkit-appearance: none;
-      border-radius: 0px;
-      padding: 12px 5px 12px 15px;
-      color: $light_gray;
-      height: 47px;
-      caret-color: $cursor;
-
-      &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $bg inset !important;
-        -webkit-text-fill-color: $cursor !important;
-      }
-    }
-  }
-
-  .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    color: #454545;
-  }
+// .div_1 {
+//   background-image: url('../../assets/背景.png');
+//   background-size: cover; /* 图像大小适应容器 */
+//   background-position: center; /* 图像在容器中的位置 */
+//   background-repeat: no-repeat; /* 禁止图像平铺 */
+//   width: 100%;
+//   height: 100%;
+//   // width: 1920px;
+//   // height: 1080px;
+//   // background: linear-gradient(360deg, #0B4F96 0%, rgba(27,83,140,0.6) 72%, rgba(11,79,150,0) 100%);
+//   // border-radius: 0px 0px 0px 0px;
+//   // opacity: 1;
+// }
+// .div_2 {
+//   z-index: 1;
+//   margin-left: 86px;
+//   margin-bottom: 61px;
+//   margin-top: 106px;
+//   margin-right: 182px;
+//   width: 1652px;
+//   height: 913px;
+//   background-color: red;
+// }
+.div_logo {
+  width:68.17px;
+  height: 260px;
 }
+.div_name {
+
+  width: 772px;
+height: 126px;
+font-size: 80px;
+font-family: Alibaba PuHuiTi 2.0-65 Medium, Alibaba PuHuiTi 20;
+font-weight: normal;
+color: #FFFFFF;
+line-height: 105px;
+letter-spacing: 9px;
+text-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+-webkit-background-clip: text;
+// -webkit-text-fill-color: transparent;
+}
+.div_name2 {
+  width: 870px;
+height: 126px;
+font-size: 80px;
+font-family: Alibaba PuHuiTi 2.0-65 Medium, Alibaba PuHuiTi 20;
+font-weight: normal;
+color: #FFFFFF;
+line-height: 105px;
+letter-spacing: 9px;
+text-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+-webkit-background-clip: text;
+// -webkit-text-fill-color: transparent;
+}
+.div_name3 {
+  width: 959px;
+height: 180px;
+font-size: 48px;
+font-family: Alibaba PuHuiTi 2.0-55 Regular, Alibaba PuHuiTi 20;
+font-weight: normal;
+color: #FFFFFF;
+line-height: 90px;
+text-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+-webkit-background-clip: text;
+// -webkit-text-fill-color: transparent;
+}
+.div_ui {
+  width: 460px;
+height: 490px;
+box-shadow: 0px 4px 16px 0px rgba(0,0,0,0.15);
+border-radius: 18px 18px 18px 18px;
+opacity: 1;
+}
+.div_5 {
+  width: 772px;
+height: 126px;
+font-size: 90px;
+font-family: Alibaba PuHuiTi 2.0-65 Medium, Alibaba PuHuiTi 20;
+font-weight: normal;
+color: #FFFFFF;
+line-height: 105px;
+letter-spacing: 9px;
+text-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+.div_6 {
+  width: 460px;
+height: 490px;
+background: #FFFFFF;
+box-shadow: 0px 4px 16px 0px rgba(0,0,0,0.15);
+border-radius: 18px 18px 18px 18px;
+opacity: 1;
+}
+
+.blurred-input {
+  width: 300px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0); /* 完全透明 */
+  // background: rgba(255, 255, 255, 0.8); /* 设置输入框背景颜色，增强虚化效果 */
+  border: none;
+  border-radius: 5px;
+  // filter: blur(5px); /* 添加模糊效果，值可以根据需要调整 */
+  // box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* 添加阴影效果，以增强虚化效果 */
+  // transition: background 0.3s, filter 0.3s; /* 添加过渡效果，以平滑变化 */
+}
+
+.blurred-input:focus {
+  background: rgba(255, 255, 255, 1); /* 输入框获取焦点时，取消虚化 */
+  filter: blur(0);
+}
+
 </style>
 
-<style lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
-
-.login-container {
-  min-height: 100%;
-  width: 100%;
-  background-color: $bg;
-  overflow: hidden;
-
-  .login-form {
-    position: relative;
-    width: 520px;
-    max-width: 100%;
-    padding: 160px 35px 0;
-    margin: 0 auto;
-    overflow: hidden;
-  }
-
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-
-    span {
-      &:first-of-type {
-        margin-right: 16px;
-      }
-    }
-  }
-
-  .svg-container {
-    padding: 6px 5px 6px 15px;
-    color: $dark_gray;
-    vertical-align: middle;
-    width: 30px;
-    display: inline-block;
-  }
-
-  .title-container {
-    position: relative;
-
-    .title {
-      font-size: 26px;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
-    }
-  }
-
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: $dark_gray;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .thirdparty-button {
-    position: absolute;
-    right: 0;
-    bottom: 6px;
-  }
-
-  @media only screen and (max-width: 470px) {
-    .thirdparty-button {
-      display: none;
-    }
-  }
-}
-</style>

@@ -56,10 +56,10 @@
       <el-table-column prop="time" label="获得时间" width="80" />
       <el-table-column prop="teacher" label="获得教师" />
       <el-table-column prop="attachment" label="证书附件">
-        <template slot-scope="scope">
-          <!--todo 使用el-image错误 -->
-          <img :src="scope.row.attachment">
-        </template>
+        <!-- <template slot-scope="scope"> -->
+        <!--todo 使用el-image错误 -->
+        <i class="el-icon-picture" />
+        <!-- </template> -->
 
       </el-table-column>
       <el-table-column prop="action" label="操作">
