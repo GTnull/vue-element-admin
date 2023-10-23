@@ -1,7 +1,7 @@
 <template>
   <div class="div_1">
     <div class="div_2">
-      <div class="div_ui"><img src="@/assets/ui.png"></div>
+      <div class="div_ui"><img src="@/assets/ui-fix.png"></div>
       <div class="div-login">
         <div class="div-login-input">
           <el-input
@@ -140,8 +140,8 @@ export default {
 }
 
 .div-login-input {
-  position: absolute;
-  margin-top: 160px;
+  position: relative;
+  margin-top: 180px;
   margin-left: 75px;
 }
 .username-password-input {
